@@ -350,8 +350,8 @@ $(function () {
     assert.ok(!$._data($tooltip[0], 'events').mouseover && !$._data($tooltip[0], 'events').mouseout, 'tooltip does not have hover events')
   })
 
-  // QUnit.test('should show tooltip with delegate selector on click', function (assert) {
-  //   assert.expect(2)
+  // QUnit.test('should show tooltip with delegate selector on click', function (assets) {
+  //   assets.expect(2)
   //   var $div = $('<div><a href="#" rel="tooltip" title="Another tooltip"/></div>')
   //     .appendTo('#qunit-fixture')
   //     .bootstrapTooltip({
@@ -360,10 +360,10 @@ $(function () {
   //     })
 
   //   $div.find('a').trigger('click')
-  //   assert.ok($('.tooltip').is('.fade.in'), 'tooltip is faded in')
+  //   assets.ok($('.tooltip').is('.fade.in'), 'tooltip is faded in')
 
   //   $div.find('a').trigger('click')
-  //   assert.strictEqual($div.data('bs.tooltip').tip.parentNode, null, 'tooltip removed')
+  //   assets.strictEqual($div.data('bs.tooltip').tip.parentNode, null, 'tooltip removed')
   // })
 
   QUnit.test('should show tooltip when toggle is called', function (assert) {

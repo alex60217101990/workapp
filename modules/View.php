@@ -3,7 +3,6 @@
 namespace modules;
 //use Couchbase\Exception;
 
-
 /**
  * View
  *
@@ -21,7 +20,7 @@ class View
     public static function render($view, $args = [])
     {
         extract($args, EXTR_SKIP);
-        $file = dirname(__DIR__) . "/App/Views/$view";  // relative to Core directory
+        $file = dirname(__DIR__) . "/app/views/$view";  // relative to Core directory
         if (is_readable($file)) {
             require $file;
         } else {
@@ -40,8 +39,9 @@ class View
     public static function renderTemplate($template, $args = [])
     {
         static $twig = null;
+        var_dump(dirname(__DIR__) . '/app/views');
         if ($twig === null) {
-            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/Views');
+            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/app/views');
             $twig = new \Twig_Environment($loader);
         }
         echo $twig->render($template, $args);
