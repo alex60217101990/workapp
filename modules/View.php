@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace modules;
 //use Couchbase\Exception;
 
 
