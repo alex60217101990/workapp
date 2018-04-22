@@ -19,33 +19,89 @@ $router = Http\Router::instance();
 $config = [];
 $renderer = new PhpRenderer(__DIR__ . '/app/views', $config);
 
-$router->get('/list/{number}', function ($req) use ($renderer) {
-    $data = Tasks::getTasks($req->number);
-    echo $renderer->render('pages', [$data, Tasks::getTasksCount(), $req->number]);
+$router->get('/list/{number}/{sort}', function ($req) use ($renderer) {
+    //(Id|Name|Description|Status)
+    $data = Tasks::getTasks($req->number,$req->sort);
+    echo $renderer->render('pages', [$data, Tasks::getTasksCount(), $req->number, $req->sort]);
 });
+
+//var_dump(Tasks::getTasks(0,'Name'));
 
 $router->get('/page', function () use ($renderer) {
     echo $renderer->render('download');
 });
 
 $router->post('/save_image', function ($req, $res) {
-    $file = new HomeController();
-    if (isset($_FILES) && isset($_FILES['image'])) {
-        //Переданный массив сохраняем в переменной
-        $image = $_FILES['image'];
-        $res->send($file->ResizeImage($image));
-    } else {
-        $res->send('error');
+    try {
+        $file = new HomeController();
+        if (isset($_FILES) && isset($_FILES['image'])) {
+            //Переданный массив сохраняем в переменной
+            $image = $_FILES['image'];
+            $res->send($file->ResizeImage($image));
+        } else {
+            $res->send('error');
+        }
+    } catch (\Exception $e) {
+        $res->send($e->getMessage());
     }
 });
+
+
+
+$router->post('/save_image', function ($req, $res) {
+    try {
+        $file = new HomeController();
+        if (isset($_FILES) && isset($_FILES['image']) && isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $element = Tasks::getColumn(4, 'ImageLocation')['ImageLocation'];
+            if(file_exists('./assets/images/'.$element))
+                unlink('./assets/images/'.$element);
+            //Переданный массив сохраняем в переменной
+            $image = $_FILES['image'];
+            $res->send([$file->ResizeImage($image, $_POST['id']), $_POST['id'], $element]);
+        } else {
+            $res->send('error');
+        }
+    } catch (\Exception $e) {
+        $res->send($e->getMessage());
+    }
+});
+
+
 
 $router->post('/update_task_data', function ($req, $res) {
     try {
         $file = new HomeController();
-        if (isset($req->query['data'])) {
-            $res->send($req->query['data']);
+        $list = $_POST['params'];
+        if (isset($_POST['params'])) {
+            $post = ['name'=> '', 'email' => '', 'check' => 0, 'desc' => ''];
+           /* if(!empty($list[1])) $post['name'] = $list[1];
+            if(!empty($list[2])) $post['email'] = $list[2];
+            if(!empty($list[3])) $post['check'] = $list[3]==='true'?1:0;
+            if(!empty($list[4])) $post['desc'] = $list[4];*/
+
+            if(!empty($list[1])){
+                Tasks::editColumn($list[0], 'Name', $list[1]);
+                $post['name'] = $list[1];
+            }
+
+            if(!empty($list[2])){
+                Tasks::editColumn($list[0], 'Mail', $list[2]);
+                $post['email'] = $list[2];
+            }
+            if(!empty($list[3])){
+                $post['check'] = $list[3]==='true'?'New':'Ready';
+                Tasks::editColumn($list[0], 'Status',$post['check']);
+            }
+            if(!empty($list[4])){
+                Tasks::editColumn($list[0], 'Description', $list[4]);
+                $post['desc'] = $list[4];
+            }
+
+            //Tasks::setTask()
+            $res->send(json_encode([$_POST['params'],$post]));
         } else {
-            $res->send(/*'false'*/json_encode($_POST['params']));
+            $res->send(['params'=>'false', 'r' => $_POST['params']['0']]);
         }
     }catch(\Exception $e){
         $res->send($e->getMessage());

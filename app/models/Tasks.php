@@ -25,7 +25,7 @@ use modules\{Model,Config};
 
      public static function getTasksCount()
      {
-         $sql="SELECT COUNT(*) FROM `Tasks` WHERE 1";
+         $sql="SELECT COUNT(Id) FROM `Tasks`";
          return  self::getDB()->query($sql)->fetchAll();
      }
 
@@ -48,4 +48,11 @@ use modules\{Model,Config};
          $sql = "UPDATE `Tasks` SET `{$columnName}`='{$newValue}' WHERE Id={$taskId}";
          self::getDB()->query($sql);
      }
+
+     public static  function getColumn($taskId,$columnName){
+         //TODO: Validate here.
+         $sql = "SELECT `{$columnName}` FROM `Tasks` WHERE `Id`={$taskId}";
+         return  self::getDB()->query($sql)->fetch();
+     }
+
  }
