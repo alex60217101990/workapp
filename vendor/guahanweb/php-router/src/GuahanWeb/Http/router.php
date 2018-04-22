@@ -1,6 +1,7 @@
 <?php
 namespace GuahanWeb\Http;
 
+
 class RouterException extends \Exception {}
 
 class Router {

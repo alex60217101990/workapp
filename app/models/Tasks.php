@@ -7,7 +7,8 @@
  */
 
 //TODO: Change include in other file. Maybe index.php.
-use modules\{Model,Config};
+use modules\Model;
+use modules\Config;
 
  class Tasks  extends Model
 {

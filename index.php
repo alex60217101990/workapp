@@ -6,14 +6,14 @@ use Windwalker\Renderer\PhpRenderer;
 // Include the namespace
 use GuahanWeb\Http;
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__. '/vendor/autoload.php';
 require_once('modules/interfaces.php');
 include "app/controllers/HomeController.php";
 include_once 'modules/config.php';
 require_once 'app/models/Tasks.php';
 
 // Get a router instance
-$router = Http\Router::instance();
+$router = GuahanWeb\Http\Router::instance();
 // Register a route
 
 $config = [];
