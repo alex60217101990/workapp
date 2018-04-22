@@ -75,6 +75,13 @@ class ComposerStaticInitcbc9d07c841052eeeec61b92fb803db5
                 0 => __DIR__ . '/..' . '/illuminate/container',
             ),
         ),
+        'G' => 
+        array (
+            'GuahanWeb\\Http' => 
+            array (
+                0 => __DIR__ . '/..' . '/guahanweb/php-router/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -1,8 +1,10 @@
 <?php
 namespace app\controllers;
 
-use modules\View;
 use modules\Controller;
+use modules\View;
+use Windwalker\Renderer\PhpRenderer;
+
 //require_once('modules/View.php');
 
 
@@ -134,10 +136,15 @@ class HomeController extends Controller
             // Генерируем новое имя для изображения. Можно сохранить и со старым
             // но это не рекомендуется делать
 
-            if(file_exists('../assets/images')===TRUE){
+       /*     if(file_exists('../assets/images')===TRUE){
                 $imageFullName = '../assets/images/' . hash('crc32',time()) . '.' . $imageFormat;
             }else{
                 mkdir("../assets/images");
+            }*/
+            if(file_exists('assets/images')===TRUE){
+                $imageFullName = 'assets/images/' . hash('crc32',time()) . '.' . $imageFormat;
+            }else{
+                mkdir('assets/images');
             }
 
             // Сохраняем тип изображения в переменную
@@ -153,6 +160,17 @@ class HomeController extends Controller
         }catch (\Exception $exception) {
             return 'error';
         }
+    }
+
+
+    public function showMainPage($page){
+        $config = [];
+        $renderer = new PhpRenderer(__DIR__ . '/app/views', $config);
+    $data = [["Id"=>0, "Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1],
+        ["Id"=>0, "Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1],
+        ["Id"=>0, "Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1]];
+        return $renderer->render('pages', $data);
+       // return ['page'=>$page];
     }
 
 }

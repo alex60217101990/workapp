@@ -14,13 +14,20 @@ use modules\{Model,Config};
   public static function getTasks($page=0,$orderBy='Id')
   {
       //TODO: Validate here.
-      $offset=   Config::COUNT_TASK_ON_PAGE*$page;
+      $offset=   Config::COUNT_TASKS_ON_PAGE*$page;
       $sql="SELECT `Id`, `Name`, `Mail`, `Description`, `ImageLocation`, `Status` 
             FROM `Tasks` 
             ORDER BY `{$orderBy}` 
-            LIMIT ".Config::COUNT_TASK_ON_PAGE." Offset {$offset}";
+            LIMIT ".Config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
       return  self::getDB()->query($sql)->fetchAll();
   }
+
+
+     public static function getTasksCount()
+     {
+         $sql="SELECT COUNT(*) FROM `Tasks` WHERE 1";
+         return  self::getDB()->query($sql)->fetchAll();
+     }
 
      public static function setTask($taskInfo)
      {

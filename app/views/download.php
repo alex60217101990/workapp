@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>Image upload</h1>
+            <div class="image-preview">
+                <img style="max-width: 100px!important;" id="preview" src="" alt="">
+            </div>
+            <form id="upload-image" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="image">Image file:</label>
+                    <input type="file" name="image" id="image">
+                </div>
+                <input type="submit" class="btn btn-default">
+            </form>
+            <div id="result">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ajax-reply"></div>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/send_file.js"></script>
+</body>
+</html>

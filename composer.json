@@ -4,6 +4,7 @@
     "twig/twig":">=1.8,<2.0-dev",
     "twbs/bootstrap": "^4.1",
     "windwalker/renderer": "~3.0",
-    "illuminate/view": "4.*"
+    "illuminate/view": "4.*",
+    "guahanweb/php-router": "^1.2"
   }
 }
