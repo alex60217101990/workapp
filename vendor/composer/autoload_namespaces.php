@@ -13,4 +13,5 @@ return array(
     'Illuminate\\Filesystem' => array($vendorDir . '/illuminate/filesystem'),
     'Illuminate\\Events' => array($vendorDir . '/illuminate/events'),
     'Illuminate\\Container' => array($vendorDir . '/illuminate/container'),
+    'GuahanWeb\\Http' => array($vendorDir . '/guahanweb/php-router/src'),
 );

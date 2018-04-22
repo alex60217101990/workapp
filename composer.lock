@@ -4,8 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a1b76594e05b88da0e7204a760c58bb",
+    "content-hash": "0d36f741c3e52237eb3a26e7140c20fc",
     "packages": [
+        {
+            "name": "guahanweb/php-router",
+            "version": "v1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guahanweb/php-router.git",
+                "reference": "f8ca98f7c554c87d66d4bebfd1b5b3b1a133b5ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guahanweb/php-router/zipball/f8ca98f7c554c87d66d4bebfd1b5b3b1a133b5ad",
+                "reference": "f8ca98f7c554c87d66d4bebfd1b5b3b1a133b5ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.5.x"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "GuahanWeb\\Http": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Garth Henson",
+                    "email": "garth@guahanweb.com",
+                    "homepage": "http://www.guahanweb.com",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "A lightweight router for PHP projects",
+            "time": "2016-10-14T20:36:52+00:00"
+        },
         {
             "name": "illuminate/container",
             "version": "v4.2.17",
