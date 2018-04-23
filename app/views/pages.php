@@ -84,14 +84,14 @@
         </div>
         <div class="btn-group">
             <button class="save_on_server btn btn-warning Save"
-                    style="z-index: 10000000; border-radius: 5px!important; "
+                    style=" border-radius: 5px!important; "
                     data-task-id="<?php echo $this->escape($element['Id']); ?>">Save
             </button>
 
             <div style="position:relative; width: 90%; text-overflow: ellipsis; margin-left: 5px">
                 <form class="upload-image" enctype="multipart/form-data"
                       data-task-id="<?php echo $this->escape($element['Id']); ?>">
-                    <input style="position: relative; z-index: 10000000;" type="submit" class="btn btn-outline-info">
+                    <input style="position: relative; z-index: 3;" type="submit" class="btn btn-outline-info">
                     <a class='btn btn-outline-secondary' href='javascript:;'>
                         Choose File...
                         <input type="file" name="image" class="image"

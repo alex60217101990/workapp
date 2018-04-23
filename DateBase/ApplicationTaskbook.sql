@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 21 2018 г., 16:57
+-- Время создания: Апр 24 2018 г., 01:20
 -- Версия сервера: 5.7.19
 -- Версия PHP: 7.1.7
 
@@ -33,8 +33,8 @@ CREATE TABLE `Tasks` (
   `Name` varchar(100) NOT NULL,
   `Mail` varchar(100) NOT NULL,
   `Description` text NOT NULL,
-  `ImageLocation` text NOT NULL,
-  `Status` bit(1) NOT NULL DEFAULT b'0'
+  `ImageLocation` varchar(300) DEFAULT '700x300.png',
+  `Status` enum('New','Ready') NOT NULL DEFAULT 'New'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -42,16 +42,16 @@ CREATE TABLE `Tasks` (
 --
 
 INSERT INTO `Tasks` (`Id`, `Name`, `Mail`, `Description`, `ImageLocation`, `Status`) VALUES
-(1, 'Name0', 'mail0@mail.com', ' Description0', 'http://placehold.it/320x240', b'0'),
-(2, 'Name1', 'mail1@mail.com', ' Description1', 'http://placehold.it/321x240', b'0'),
-(3, 'Name2', 'mail2@mail.com', ' Description2', 'http://placehold.it/322x240', b'0'),
-(4, 'Name3', 'mail3@mail.com', ' Description3', 'http://placehold.it/323x240', b'0'),
-(5, 'Name4', 'mail4@mail.com', ' Description4', 'http://placehold.it/324x240', b'0'),
-(6, 'Name5', 'mail5@mail.com', ' Description5', 'http://placehold.it/325x240', b'0'),
-(7, 'Name6', 'mail6@mail.com', ' Description6', 'http://placehold.it/326x240', b'0'),
-(8, 'Name7', 'mail7@mail.com', ' Description7', 'http://placehold.it/327x240', b'0'),
-(9, 'Name8', 'mail8@mail.com', ' Description8', 'http://placehold.it/328x240', b'1'),
-(17, 'Edit Column Test', 'Test', 'Test', 'Test', b'1');
+(1, 'YName0', 'mail0@mail.com', ' Description0', '493fe9cd.', 'New'),
+(2, 'Name1', 'mail1@mail.com', ' Description1', '700x300.png', 'New'),
+(3, 'Name2', 'mail2@mail.com', ' Description2', '700x300.png', 'New'),
+(4, 'Name3 jfdhghrigriog', 'mail3@mail.com djfkvfrg', 'Description3', 'bff8ba84.', 'Ready'),
+(5, 'Name4', 'mail4@mail.com', ' Description4', '57e1321f.jpg', 'New'),
+(6, 'Name5', 'mail5@mail.com', ' Description5', '42203038.jpg', 'New'),
+(7, 'Name6', 'mail6@mail.com', ' Description6', '36f35f77.jpg', 'New'),
+(8, 'Name7', 'mail7@mail.com', ' Description7', 'e038fa81.jpg', 'New'),
+(9, 'Name8', 'Mail9@mail.com', 'Description999', '6fe2e0e4.jpg', 'Ready'),
+(17, 'Edit Column Test', 'Test', 'Test', '6f258a9c.jpg', 'New');
 
 -- --------------------------------------------------------
 
