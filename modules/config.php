@@ -6,7 +6,7 @@ namespace modules;
  *
  * PHP version 7.0
  */
-class Config
+class config
 {    /**
      * Database host
      * @var string

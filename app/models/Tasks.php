@@ -7,18 +7,25 @@
  */
 
 //TODO: Change include in other file. Maybe index.php.
-use modules\{Model,Config};
+//use modules\{model,config};
+use modules\config;
+use modules\model\Model;
+use modules\MyAutoload;
 
- class Tasks  extends Model
+
+class Tasks  extends Model
 {
-  public static function getTasks($page=0,$orderBy='Id')
+    public function __construct()
+    {}
+
+     public static function getTasks($page=0,$orderBy='Id')
   {
       //TODO: Validate here.
-      $offset=   Config::COUNT_TASKS_ON_PAGE*$page;
+      $offset=   config::COUNT_TASKS_ON_PAGE*$page;
       $sql="SELECT `Id`, `Name`, `Mail`, `Description`, `ImageLocation`, `Status` 
             FROM `Tasks` 
             ORDER BY `{$orderBy}` 
-            LIMIT ".Config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
+            LIMIT ".config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
       return  self::getDB()->query($sql)->fetchAll();
   }
 

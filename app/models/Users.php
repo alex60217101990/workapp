@@ -5,9 +5,9 @@
  * Date: 4/21/2018
  * Time: 4:21 PM
  */
-use modules\Model;
+use modules\model;
 
-class Users extends Model
+class Users extends model
 {
     public static  function getUserByColumn($column,$value){
         //TODO: Validate here.

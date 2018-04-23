@@ -2,15 +2,20 @@
 
 use app\controllers\HomeController;
 // Require composer autoloader
+use modules\MyAutoload;
 use Windwalker\Renderer\PhpRenderer;
 // Include the namespace
 use GuahanWeb\Http;
 
+
 require __DIR__ . '/vendor/autoload.php';
+require_once('modules/MyAutoload.php');
 require_once('modules/interfaces.php');
 include "app/controllers/HomeController.php";
 include_once 'modules/config.php';
+require_once 'modules/model.php';
 require_once 'app/models/Tasks.php';
+
 
 // Get a router instance
 $router = Http\Router::instance();
@@ -21,8 +26,14 @@ $renderer = new PhpRenderer(__DIR__ . '/app/views', $config);
 
 $router->get('/list/{number}/{sort}', function ($req) use ($renderer) {
     //(Id|Name|Description|Status)
-    $data = Tasks::getTasks($req->number,$req->sort);
-    echo $renderer->render('pages', [$data, Tasks::getTasksCount(), $req->number, $req->sort]);
+    $data = Tasks::getTasks($req->number-1,$req->sort);
+    echo $renderer->render('home', [$data, Tasks::getTasksCount(), $req->number, $req->sort, 1, "page"=>'first']);
+});
+
+
+$router->get('/new_task', function ($req) use ($renderer) {
+    $add = 'yes';
+    echo $renderer->render('home', ['new'=>$add, 'page'=>'new_task']);
 });
 
 //var_dump(Tasks::getTasks(0,'Name'));
@@ -116,7 +127,7 @@ $router->process();
 
 <!--
 //include "modules/interfaces.php";
-//require "modules/config.php";
+//require "modules/Config.php";
 //require "app/models/Tasks.php";
 //require "app/models/Users.php";
 
