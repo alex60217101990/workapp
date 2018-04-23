@@ -7,26 +7,33 @@
  */
 
 //TODO: Change include in other file. Maybe index.php.
-use modules\Model;
-use modules\Config;
 
- class Tasks  extends Model
+//use modules\{model,config};
+use modules\config;
+use modules\model\Model;
+use modules\MyAutoload;
+
+
+class Tasks  extends Model
 {
-  public static function getTasks($page=0,$orderBy='Id')
+    public function __construct()
+    {}
+
+     public static function getTasks($page=0,$orderBy='Id')
   {
       //TODO: Validate here.
-      $offset=   Config::COUNT_TASKS_ON_PAGE*$page;
+      $offset=   config::COUNT_TASKS_ON_PAGE*$page;
       $sql="SELECT `Id`, `Name`, `Mail`, `Description`, `ImageLocation`, `Status` 
             FROM `Tasks` 
             ORDER BY `{$orderBy}` 
-            LIMIT ".Config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
+            LIMIT ".config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
       return  self::getDB()->query($sql)->fetchAll();
   }
 
 
      public static function getTasksCount()
      {
-         $sql="SELECT COUNT(*) FROM `Tasks` WHERE 1";
+         $sql="SELECT COUNT(Id) FROM `Tasks`";
          return  self::getDB()->query($sql)->fetchAll();
      }
 
@@ -49,4 +56,11 @@ use modules\Config;
          $sql = "UPDATE `Tasks` SET `{$columnName}`='{$newValue}' WHERE Id={$taskId}";
          self::getDB()->query($sql);
      }
+
+     public static  function getColumn($taskId,$columnName){
+         //TODO: Validate here.
+         $sql = "SELECT `{$columnName}` FROM `Tasks` WHERE `Id`={$taskId}";
+         return  self::getDB()->query($sql)->fetch();
+     }
+
  }

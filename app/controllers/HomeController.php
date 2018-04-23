@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use modules\Controller;
 use modules\View;
+use Tasks;
 use Windwalker\Renderer\PhpRenderer;
 
 //require_once('modules/View.php');
@@ -120,9 +121,10 @@ class HomeController extends Controller
         return $func($lNewImageDescriptor, $aNewImageFilePath);
     }
 
-    public function ResizeImage($image){
+    public function ResizeImage($image, $id){
 
         try {
+
             // Проверяем размер файла и если он превышает заданный размер
             // завершаем выполнение скрипта и выводим ошибку
             if ($image['size'] > 200000) {
@@ -141,8 +143,10 @@ class HomeController extends Controller
             }else{
                 mkdir("../assets/images");
             }*/
+
             if(file_exists('assets/images')===TRUE){
-                $imageFullName = 'assets/images/' . hash('crc32',time()) . '.' . $imageFormat;
+                $only_name = hash('crc32',time()) . '.' . $imageFormat;
+                $imageFullName = 'assets/images/' . $only_name;
             }else{
                 mkdir('assets/images');
             }
@@ -155,6 +159,8 @@ class HomeController extends Controller
             if($lInitialImageWidth>320)$lInitialImageWidth = 320;
             if($lInitialImageHeight>240)$lInitialImageHeight = 240;
             $this->cropImage($image['tmp_name'], $imageFullName, $lInitialImageWidth,$lInitialImageHeight);
+            
+            Tasks::editColumn(intval($id), 'ImageLocation', $only_name);
 
         return 'success';
         }catch (\Exception $exception) {
