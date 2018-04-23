@@ -8,6 +8,7 @@ use Windwalker\Renderer\PhpRenderer;
 use GuahanWeb\Http;
 
 
+
 require __DIR__ . '/vendor/autoload.php';
 require_once('modules/MyAutoload.php');
 require_once('modules/interfaces.php');
@@ -18,7 +19,7 @@ require_once 'app/models/Tasks.php';
 
 
 // Get a router instance
-$router = Http\Router::instance();
+$router = GuahanWeb\Http\Router::instance();
 // Register a route
 
 $config = [];

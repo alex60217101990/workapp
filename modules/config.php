@@ -11,22 +11,22 @@ class config
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    const DB_HOST = 'mysql314.1gb.ua';
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'ApplicationTaskbook';
+    const DB_NAME = 'gbua_z_tes4ce52';
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = 'gbua_z_tes4ce52';
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = '';
+    const DB_PASSWORD = 'f091a92fxvn';
     /**
      * Show or hide error messages on screen
      * @var boolean
