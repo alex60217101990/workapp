@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    
+
 <!-- Project One -->
         <?php foreach ($this->data[0] as $element): ?>
 <div class="row">

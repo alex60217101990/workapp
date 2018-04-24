@@ -1,4 +1,4 @@
-<h2>Please Sign In</h2>
+<h3>Add new task.</h3>
 <hr class="colorgraph">
 <div class="row" style="margin-top:20px">
     <div class="col-xs-12 col-sm-12 col-md-6 col-sm-offset-1 col-md-offset-1">
