@@ -7,7 +7,7 @@
  * Time: 10:31
  */
 use app\controllers\HomeController;
-require_once('../modules/interfaces.php');
+require_once('../modules/Controller.php');
 include ('../app/controllers/HomeController.php');
 include('../modules/View.php');
 include('../vendor/autoload.php');

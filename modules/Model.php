@@ -6,8 +6,8 @@
  * Time: 13:31
  */
 
-namespace modules\model;
-use modules\config;
+namespace modules\Model;
+use modules\Config\Config;
 use PDO;
 /**
  * Base model
@@ -25,8 +25,8 @@ abstract class Model
     {
         static $db = null;
         if ($db === null) {
-            $dsn = 'mysql:host=' . config::DB_HOST . ';dbname=' . config::DB_NAME . ';charset=utf8';
-            $db = new PDO($dsn, config::DB_USER, config::DB_PASSWORD);
+            $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
+            $db = new PDO($dsn, config::DB_USER, Config::DB_PASSWORD);
             // Throw an Exception when an error occurs
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }

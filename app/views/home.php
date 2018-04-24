@@ -23,7 +23,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="z-index: 100000000000;">
     <div class="container">
-        <a class="navbar-brand" href="?page=main"><?php echo($_GET['page']?$_GET['page']:'start') ?></a>
+        <a class="navbar-brand" href="?page=main"><?php echo($this->data['page']?$this->data['page']:'start') ?></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -31,14 +31,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+                <?php if (isset($this->data['page']) && $this->data['page'] === 'first'): ?>
                 <li class="nav-item active">
+                    <?php else: ?>
+                <li class="nav-item">
+                <?php endif; ?>
                     <a class="nav-link" href="<?php echo('/list/1/Id') ?>">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                <?php if (isset($this->data['page']) && $this->data['page'] === 'new_task'): ?>
+                <li class="nav-item active">
+                    <?php else: ?>
                 <li class="nav-item">
+                <?php endif; ?>
                     <a class="nav-link" href="<?php echo('/new_task') ?>">Add new</a>
                 </li>
+
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo('/new_task') ?>">Services</a>
                 </li>
@@ -68,10 +79,13 @@
     <!-- /.container -->
 </footer>
 <script src="../../assets/js/jquery.js"></script>
-<script src="../../assets/js/send_file.js"></script>
 <script src="../../assets/js/bootstrap.bundle.min.js"></script>
-<?php if(isset($this->data['page']) && $this->data['page']==='new'): ?>
+<?php if (isset($this->data['page']) && $this->data['page'] === 'first'): ?>
+    <script src="../../assets/js/send_file.js"></script>
+<?php endif; ?>
+<?php if (isset($this->data['page']) && $this->data['page'] === 'new_task'): ?>
     <script src="../../assets/js/add_page.js"></script>
 <?php endif; ?>
+
 </body>
 </html>

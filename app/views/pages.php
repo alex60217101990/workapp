@@ -125,16 +125,25 @@
     <!-- Pagination -->
     <ul class="pagination justify-content-center">
         <li class="page-item"> <!-- echo '/list/'.$counter_before.'/'.$this->data[3]  -->
-            <a class="page-link" href="<?php echo '/list/'. $previous_page. '/' . $this->data[3] ?>"
+            <a href="<?php echo '/list/'. $previous_page. '/' . $this->data[3] ?>"
+                <?php if($previous_page==1): ?>
+                    class="disabled page-link"
+                    <?php else: ?>
+                    class="page-link"
+                <?php endif; ?>
                aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
+                <span aria-hidden="true">&#9668;</span>
                 <span class="sr-only">Previous</span>
             </a>
         </li>
         <?php if ($iCurr > $iLeft && $iCurr < ($iEnd - $iRight)): ?>
             <?php for ($i = $iCurr - $iLeft; $i <= $iCurr + $iRight; $i++) : ?>
                 <li class="page-item">
-                    <a class="page-link" href="<?php echo '/list/' . $i . '/' . $this->data[3]; ?>">
+                    <a class="page-link"
+                        <?php if($i==intval($this->data[2])): ?>
+                            style="background: #E6E6FA"
+                        <?php endif; ?>
+                       href="<?php echo '/list/' . $i . '/' . $this->data[3]; ?>">
                         <?php echo $i; ?>
                     </a>
                 </li>
@@ -143,7 +152,11 @@
             <?php $iSlice = 1 + $iLeft - $iCurr; ?>
             <?php for ($i = 1; $i <= $iCurr + ($iRight + $iSlice); $i++) : ?>
                 <li class="page-item">
-                    <a class="page-link" href="<?php echo '/list/' . $i . '/' . $this->data[3]; ?>">
+                    <a class="page-link"
+                        <?php if($i==intval($this->data[2])): ?>
+                            style="background: #E6E6FA"
+                        <?php endif; ?>
+                       href="<?php echo '/list/' . $i . '/' . $this->data[3]; ?>">
                         <?php echo $i; ?>
                     </a>
                 </li>
@@ -152,15 +165,25 @@
             <?php $iSlice = $iRight - ($iEnd - $iCurr); ?>
             <?php for ($i = $iCurr - ($iLeft + $iSlice); $i <= $iEnd; $i++): ?>
                 <li class="page-item">
-                    <a class="page-link" href="<?php echo '/list/' . $i . '/' . $this->data[3]; ?>">
+                    <a class="page-link"
+                        <?php if($i==intval($this->data[2])): ?>
+                            style="background: #E6E6FA;"
+                        <?php endif; ?>
+                       href="<?php echo '/list/' . $i . '/' . $this->data[3]; ?>">
                         <?php echo $i; ?>
                     </a>
                 </li>
             <?php endfor; ?>
         <?php endif; ?>
         <li class="page-item">
-            <a class="page-link" href="<?php echo '/list/' . $next_page . '/' . $this->data[3] ?>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
+            <a href="<?php echo '/list/' . $next_page . '/' . $this->data[3] ?>"
+                <?php if((intval($this->data[2])+1)>$iEnd): ?>
+                    class="disabled page-link"
+                <?php else: ?>
+                    class="page-link"
+                <?php endif; ?>
+               aria-label="Next">
+                <span aria-hidden="true">&#9658;</span>
                 <span class="sr-only">Next</span>
             </a>
         </li>

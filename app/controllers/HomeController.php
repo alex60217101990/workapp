@@ -3,12 +3,7 @@ namespace app\controllers;
 
 use modules\Controller;
 use modules\View;
-use Tasks;
-use Windwalker\Renderer\PhpRenderer;
-
-//require_once('modules/View.php');
-
-
+use app\models\Tasks;
 
 class HomeController extends Controller
 {
@@ -66,7 +61,120 @@ class HomeController extends Controller
     }
 
 
-    public function cropImage($aInitialImageFilePath, $aNewImageFilePath, $aNewImageWidth, $aNewImageHeight){
+
+    /**
+     * Метод для добавления новой задачи в БД.
+     * @param $request
+     * @return array
+     */
+    public static function addTask($request) {
+        try{
+            $data = ['Name'=>'','Mail'=>'','Description'=>'','ImageLocation' => '700x300.png','Status'=>'New'];
+            if(isset($request)){
+                $e = $request['name'];
+                if(isset($request['name'])){
+                    $data['Name']=$request['name'];
+                }
+                if(isset($request['email'])){
+                    $data['Mail']=$request['email'];
+                }
+                if(isset($request['description'])){
+                    $data['Description']=$request['description'];
+                }
+                Tasks::setTask($data);
+                return  ['success' => 'true'];
+            }else{
+                return  ['fails' => 'false'];
+            }
+        }catch (\Exception $exception){
+            return ['error'=>$exception->getMessage(), 'code' => $exception->getCode()];
+        }
+    }
+
+    /**
+     * Метод для обработки принятых сырых данных.
+     * @param void
+     * @return array
+     */
+    public static function SaveImg(){
+        try {
+            $path = $_SERVER['DOCUMENT_ROOT'] = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__FILE__);
+            if (isset($_FILES) && isset($_FILES['image']) && isset($_POST['id'])) {
+                $id = $_POST['id'];
+                $element = Tasks::getColumn(intval($id), 'ImageLocation')['ImageLocation'];
+                $path_to_img = $path. DIRECTORY_SEPARATOR .'assets'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$element;
+
+                if(file_exists($path_to_img))
+                    unlink($path_to_img);
+                //Переданный массив сохраняем в переменной
+                $image = $_FILES['image'];
+                return ([HomeController::ResizeImage($image, $_POST['id']), $_POST['id'], $element]);
+            } else {
+                return (['error' => 'Data absent.']);
+            }
+        } catch (\Exception $e) {
+            return(['error' => $e->getMessage(), 'code' => $e->getCode()]);
+        }
+    }
+
+    /**
+     * Метод для определения необходимости ресайза изображения
+     * и сохранения его в базе данных.
+     * @param $image
+     * @param $id
+     * @return string
+     */
+    public static function ResizeImage($image, $id=null){
+
+        try {
+
+            // Проверяем размер файла и если он превышает заданный размер
+            // завершаем выполнение скрипта и выводим ошибку
+            if ($image['size'] > 200000) {
+                die('error');
+            }
+
+            // Достаем формат изображения
+            $imageFormat = explode('.', $image['name']);
+            $imageFormat = $imageFormat[1];
+
+            if(file_exists('assets/images')===TRUE){
+                $only_name = hash('crc32',time()) . '.' . $imageFormat;
+                $imageFullName = 'assets/images/' . $only_name;
+            }else{
+                mkdir('assets/images');
+            }
+
+            // Сохраняем тип изображения в переменную
+            $imageType = $image['type'];
+
+            // Получаем размеры и тип изображения в виде числа
+            list($lInitialImageWidth, $lInitialImageHeight, $lImageExtensionId) = getimagesize($image['tmp_name']);
+            if($lInitialImageWidth>320)$lInitialImageWidth = 320;
+            if($lInitialImageHeight>240)$lInitialImageHeight = 240;
+            HomeController::cropImage($image['tmp_name'], $imageFullName, $lInitialImageWidth,$lInitialImageHeight);
+
+            if(isset($id) && !empty($id))
+                Tasks::editColumn(intval($id), 'ImageLocation', $only_name);
+            else
+                Tasks::editColumn(null,'ImageLocation', $only_name);
+
+            return 'success';
+        }catch (\Exception $exception) {
+            return 'error';
+        }
+    }
+
+
+    /**
+     * Метод для обработки полученного изображения.
+     * @param $aInitialImageFilePath
+     * @param $aNewImageFilePath
+     * @param $aNewImageWidth
+     * @param $aNewImageHeight
+     * @return bool
+     */
+    public static function cropImage($aInitialImageFilePath, $aNewImageFilePath, $aNewImageWidth, $aNewImageHeight){
         if (($aNewImageWidth < 0) || ($aNewImageHeight < 0)) {
             return false;
         }
@@ -121,71 +229,66 @@ class HomeController extends Controller
         return $func($lNewImageDescriptor, $aNewImageFilePath);
     }
 
-    public function ResizeImage($image, $id){
 
+    /**
+     * Метод для редактирования заждачи админом.
+     * @param $request
+     * @return array
+     */
+    public static function updateTask($request){
         try {
+            $list = $request;
+            if (isset($request)) {
+                $post = ['name' => '', 'email' => '', 'check' => 0, 'desc' => ''];
 
-            // Проверяем размер файла и если он превышает заданный размер
-            // завершаем выполнение скрипта и выводим ошибку
-            if ($image['size'] > 200000) {
-                die('error');
+                if (!empty($list[1])) {
+                    Tasks::editColumn($list[0], 'Name', $list[1]);
+                    $post['name'] = $list[1];
+                }
+
+                if (!empty($list[2])) {
+                    Tasks::editColumn($list[0], 'Mail', $list[2]);
+                    $post['email'] = $list[2];
+                }
+                if (!empty($list[3])) {
+                    $post['check'] = $list[3] ==='true' ? 'Ready' : 'New';
+                    Tasks::editColumn($list[0], 'Status', $list[3] === 'true' ? 'Ready' : 'New');
+                }
+                if (!empty($list[4])) {
+                    Tasks::editColumn($list[0], 'Description', $list[4]);
+                    $post['desc'] = $list[4];
+                }
+
+                return ([$request, $post]);
+            } else {
+                return (['params' => 'false', 'r' => $request['0']]);
             }
-
-            // Достаем формат изображения
-            $imageFormat = explode('.', $image['name']);
-            $imageFormat = $imageFormat[1];
-
-            // Генерируем новое имя для изображения. Можно сохранить и со старым
-            // но это не рекомендуется делать
-
-       /*     if(file_exists('../assets/images')===TRUE){
-                $imageFullName = '../assets/images/' . hash('crc32',time()) . '.' . $imageFormat;
-            }else{
-                mkdir("../assets/images");
-            }*/
-
-            if(file_exists('assets/images')===TRUE){
-                $only_name = hash('crc32',time()) . '.' . $imageFormat;
-                $imageFullName = 'assets/images/' . $only_name;
-            }else{
-                mkdir('assets/images');
-            }
-
-            // Сохраняем тип изображения в переменную
-            $imageType = $image['type'];
-
-            // Получаем размеры и тип изображения в виде числа
-            list($lInitialImageWidth, $lInitialImageHeight, $lImageExtensionId) = getimagesize($image['tmp_name']);
-            if($lInitialImageWidth>320)$lInitialImageWidth = 320;
-            if($lInitialImageHeight>240)$lInitialImageHeight = 240;
-            $this->cropImage($image['tmp_name'], $imageFullName, $lInitialImageWidth,$lInitialImageHeight);
-            
-            Tasks::editColumn(intval($id), 'ImageLocation', $only_name);
-
-        return 'success';
-        }catch (\Exception $exception) {
-            return 'error';
+        } catch (\Exception $e) {
+            return (['error' => $e->getMessage(), 'code' => $e->getCode()]);
         }
     }
 
-
-    public function showMainPage($page){
-        $config = [];
-        $renderer = new PhpRenderer(__DIR__ . '/app/views', $config);
-    $data = [["Id"=>0, "Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1],
-        ["Id"=>0, "Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1],
-        ["Id"=>0, "Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1]];
-        return $renderer->render('pages', $data);
-       // return ['page'=>$page];
+    /**
+     * Метод для записи новой задачи
+     * уже вместе с изображением.
+     * @param {void}
+     * @return array
+     */
+    public static function AddImg():array {
+        try {
+            if (isset($_FILES) && isset($_FILES['image'])) {
+                //Переданный массив сохраняем в переменной
+                $image = $_FILES['image'];
+                return ([HomeController::addTask(['name'=>!empty($_POST['name'])?$_POST['name']:'',
+                    'email'=>!empty($_POST['email'])?$_POST['email']:'',
+                    'description'=>!empty($_POST['description'])?$_POST['description']:'']),
+                    HomeController::ResizeImage($image)]);
+            } else {
+                return (['error' => 'Data absent.']);
+            }
+        } catch (\Exception $e) {
+            return(['error' => $e->getMessage(), 'code' => $e->getCode()]);
+        }
     }
 
 }
-/*
-<form>
-  <div class="form-group">
-    <label for="exampleFormControlFile1">Example file input</label>
-    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-  </div>
-    <button type="submit" class="btn btn-primary mb-2">Submit</button>
-</form>
-*/

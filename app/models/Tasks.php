@@ -5,12 +5,12 @@
  * Date: 4/21/2018
  * Time: 10:43 AM
  */
-
+namespace app\models;
 //TODO: Change include in other file. Maybe index.php.
 
 //use modules\{model,config};
-use modules\config;
-use modules\model\Model;
+use modules\Config\Config;
+use modules\Model\Model;
 use modules\MyAutoload;
 
 
@@ -22,11 +22,11 @@ class Tasks  extends Model
      public static function getTasks($page=0,$orderBy='Id')
   {
       //TODO: Validate here.
-      $offset=   config::COUNT_TASKS_ON_PAGE*$page;
+      $offset=   Config::COUNT_TASKS_ON_PAGE*$page;
       $sql="SELECT `Id`, `Name`, `Mail`, `Description`, `ImageLocation`, `Status` 
             FROM `Tasks` 
             ORDER BY `{$orderBy}` 
-            LIMIT ".config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
+            LIMIT ".Config::COUNT_TASKS_ON_PAGE." Offset {$offset}";
       return  self::getDB()->query($sql)->fetchAll();
   }
 
@@ -44,7 +44,7 @@ class Tasks  extends Model
              $sql = "INSERT INTO `Tasks` ( `Name`, `Mail`, `Description`, `ImageLocation`, `Status`) VALUES
                     ('{$taskInfo["Name"]}','{$taskInfo["Mail"]}',
                      '{$taskInfo["Description"]}','{$taskInfo["ImageLocation"]}',
-                     {$taskInfo["Status"]})";
+                     '{$taskInfo["Status"]}')";
              self::getDB()->query($sql);
              return 1;
          }
@@ -53,7 +53,11 @@ class Tasks  extends Model
 
      public static  function editColumn($taskId,$columnName,$newValue){
          //TODO: Validate here.
-         $sql = "UPDATE `Tasks` SET `{$columnName}`='{$newValue}' WHERE Id={$taskId}";
+         if(!empty($taskId)){
+             $sql = "UPDATE `Tasks` SET `{$columnName}`='{$newValue}' WHERE Id={$taskId}";
+         }else{
+             $sql = "UPDATE `Tasks` SET `{$columnName}`='{$newValue}' ORDER BY Id DESC LIMIT 1";
+         }
          self::getDB()->query($sql);
      }
 
