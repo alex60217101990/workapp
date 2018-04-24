@@ -1,0 +1,3 @@
+
+ //================================= Authorization Info =================================
+ //$_SESSION["Auth"]=["Auth"=>true/false,"UserName"=>"UserName","AccountType"=>"User/Admin"]
