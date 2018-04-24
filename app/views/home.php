@@ -140,7 +140,7 @@ AUTH;
 </div>
 <script src="../../assets/js/jquery.js"></script>
 <script src="../../assets/js/bootstrap.bundle.min.js"></script>
-<<<<<<< HEAD
+
 <?php if (isset($this->data['page']) && $this->data['page'] === 'first'): ?>
     <script src="../../assets/js/send_file.js"></script>
 <?php endif; ?>
@@ -148,15 +148,9 @@ AUTH;
     <script src="../../assets/js/add_page.js"></script>
 <?php endif; ?>
 
-=======
-<?php if (isset($this->data['page']) && $this->data['page'] === 'new'): ?>
-    <script src="../../assets/js/add_page.js"></script>
-<?php endif; ?>
-
 <?php if (!isset($_SESSION["Auth"])): ?>
     <script src="../../assets/js/authorization.js"></script>
 <?php endif; ?>
 
->>>>>>> f423db789bd98434441beded5585949b44e48406
 </body>
 </html>

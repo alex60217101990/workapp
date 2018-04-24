@@ -78,6 +78,26 @@ $router->post('/update_task_data', function ($req, $res) {
     }
 });
 
+
+$router->post('/authorization', function ($req, $res) {
+    try {
+//TODO: tmp.authorization hare.
+        $authInfo = json_decode($_POST['authData'], true);
+        $user = Users::getUserByLogAndPass($authInfo['login'], $authInfo['password']);
+        if ($user) {
+            $_SESSION['Auth']=["Auth"=>true,"UserName"=>$user['Name'],"AccauntType"=>$user['AccountType']];
+            $res->send(json_encode(1));
+
+        } else {
+            $res->send(json_encode(2));
+        }
+
+    } catch (\Exception $e) {
+        $res->send($e->getMessage());
+    }
+});
+
+
 /**
  * ----------------------------------------------------------------------------------
  * Application routes.

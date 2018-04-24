@@ -34,7 +34,7 @@
                     data-toggle="modal" data-toggle="modal" data-target="#largeModal">Look</button>
             <div style="position:relative; width: 90%; text-overflow: ellipsis; margin-left: 5px">
                 <form class="upload-image" id="upload-image" enctype="multipart/form-data">
-                    <input style="position: relative; z-index: 10000000;" type="submit" class="btn btn-info">
+                    <input style="position: relative; z-index: 700;" type="submit" class="btn btn-info">
                     <a class='btn btn-secondary' href='javascript:;'>
                         Choose File...
                         <input type="file" name="image" id="image" class="image"

@@ -28,7 +28,7 @@
     width: 0;
     height: 0;
     position: absolute;
-
+    z-index: 500;
     box-sizing: border-box;
     right: 15px;
     top: 50%;
@@ -45,7 +45,7 @@
     left: 0;
     right: 0;
     /* Styles */
-
+    z-index: 500;
     box-sizing: border-box;
     background: white;
     border-radius: inherit;
@@ -71,7 +71,7 @@
     position: absolute;
     bottom: 100%;
     right: 15px;
-
+    z-index: 500;
     border-width: 0 6px 6px 6px;
     border-style: solid;
     border-color: #fff transparent;
@@ -85,7 +85,7 @@
     bottom: 100%;
     box-sizing: border-box;
     right: 13px;
-
+    z-index: 500;
     border-width: 0 8px 8px 8px;
     border-style: solid;
     border-color: rgba(0, 0, 0, 0.1) transparent;
