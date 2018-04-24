@@ -16,7 +16,10 @@ class MyAutoload
     {
         MyAutoload::$dir = $_SERVER['DOCUMENT_ROOT'] = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__FILE__);
     }
-
+    /**
+     * Load on directory "controllers".
+     * @return bool
+     */
     public static function loadControllers($aClassName){
         $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'app'
             . DIRECTORY_SEPARATOR . 'controllers' .DIRECTORY_SEPARATOR. $aClassName . '.php';
@@ -27,7 +30,10 @@ class MyAutoload
         }
         return false;
     }
-
+    /**
+     * Load on directory "modules".
+     * @return bool
+     */
     public static function loadModules($aClassName){
         //функция автозагруки, загружающая классы из папки classes:
         $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . $aClassName . '.php';
@@ -37,6 +43,10 @@ class MyAutoload
         }
         return false;
     }
+    /**
+     * Load on directory "models".
+     * @return bool
+     */
     public static function loadModels($aClassName){
         $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'app'
             . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $aClassName . '.php';
@@ -46,6 +56,10 @@ class MyAutoload
         }
         return false;
     }
+    /**
+     * Load on directory "views".
+     * @return bool
+     */
     public static function loadViews($aClassName){
         $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'app'
             . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $aClassName . '.php';
@@ -56,6 +70,10 @@ class MyAutoload
         return false;
     }
 
+    /**
+     * Load on directory "Routes".
+     * @return bool
+     */
     public static function loadRoutes(){
         $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'Routes'
             . DIRECTORY_SEPARATOR . 'Routes.php';
@@ -66,6 +84,9 @@ class MyAutoload
         return false;
     }
 
+    /**
+     * Method init load php class.
+     */
     public static function AutoLoad(){
         spl_autoload_register(function ($file_name){
             $name = preg_replace('~(.*[\\\\]([A-Z]\w+))~im', '$2', $file_name);
@@ -75,8 +96,6 @@ class MyAutoload
             MyAutoload::loadModules($name);//'Config'
             MyAutoload::loadModels($name);//'Tasks'
             MyAutoload::loadRoutes();//'Tasks'
-            // $name = preg_replace('~(.*[\\\\]([A-Z]\w+))~im', '$2', $file_name);
-            //  var_dump($name);
         });
     }
 

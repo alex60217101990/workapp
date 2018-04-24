@@ -30,7 +30,6 @@ $renderer = new PhpRenderer($path . DIRECTORY_SEPARATOR. 'app'.DIRECTORY_SEPARAT
  */
 
 $router->get('/list/{number}/{sort}', function ($req) use ($renderer) {
-    //(Id|Name|Description|Status)
     $data = Tasks::getTasks($req->number-1,$req->sort);
     echo $renderer->render('home', [$data, Tasks::getTasksCount(), $req->number, $req->sort, 1, "page"=>'first']);
 });

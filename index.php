@@ -1,19 +1,13 @@
 <?php
 
-require_once('modules/MyAutoload.php');
-require __DIR__ . '/vendor/autoload.php';
-include_once 'Routes/Routes.php';
+    require_once('modules/MyAutoload.php');
+    require __DIR__ . '/vendor/autoload.php';
+    include_once 'Routes/Routes.php';
 
 ?>
 
 
 <!--
-//include "modules/Controller.php";
-//require "modules/Config.php";
-//require "app/models/Tasks.php";
-//require "app/models/Users.php";
-
-
 //TODO:Test.Debug.
 //print_r(Tasks::getTasks());
 //$taskInfo=["Name"=>"Tests","Mail"=>"Test","Description"=>"Test","ImageLocation"=>"Test","Status"=>1];

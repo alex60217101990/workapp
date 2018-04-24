@@ -44,8 +44,7 @@
             </div>
         </div>
     </div>
-
-    <?php var_dump($this->data[2][0]) ?>
+    
 <!-- Project One -->
         <?php foreach ($this->data[0] as $element): ?>
 <div class="row">
@@ -126,7 +125,7 @@
     <ul class="pagination justify-content-center">
         <li class="page-item"> <!-- echo '/list/'.$counter_before.'/'.$this->data[3]  -->
             <a href="<?php echo '/list/'. $previous_page. '/' . $this->data[3] ?>"
-                <?php if($previous_page==1): ?>
+                <?php if($previous_page-1==0 && intval($this->data[2])==1): ?>
                     class="disabled page-link"
                     <?php else: ?>
                     class="page-link"
