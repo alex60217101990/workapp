@@ -16,72 +16,53 @@ class MyAutoload
     {
         MyAutoload::$dir = $_SERVER['DOCUMENT_ROOT'] = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__FILE__);
     }
-    /**
-     * Load on directory "controllers".
-     * @return bool
-     */
-    public static function loadControllers($aClassName){
-        $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'app'
-            . DIRECTORY_SEPARATOR . 'controllers' .DIRECTORY_SEPARATOR. $aClassName . '.php';
-        //var_dump($aClassFilePath);
-        if (file_exists($aClassFilePath)) {
-            require_once $aClassFilePath;
-            return true;
-        }
-        return false;
-    }
+
     /**
      * Load on directory "modules".
      * @return bool
      */
-    public static function loadModules($aClassName){
+    public static function loadPHP($aClassName){
+        $result = MyAutoload::file_search(MyAutoload::$dir, $aClassName . '.php');
         //функция автозагруки, загружающая классы из папки classes:
         $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . $aClassName . '.php';
-        if (file_exists($aClassFilePath)) {
-            require_once $aClassFilePath;
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Load on directory "models".
-     * @return bool
-     */
-    public static function loadModels($aClassName){
-        $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'app'
-            . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $aClassName . '.php';
-        if (file_exists($aClassFilePath)) {
-            require_once $aClassFilePath;
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Load on directory "views".
-     * @return bool
-     */
-    public static function loadViews($aClassName){
-        $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'app'
-            . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $aClassName . '.php';
-        if (file_exists($aClassFilePath)) {
-            require_once $aClassFilePath;
+        if (!empty($result) && file_exists($result)) {
+            require_once $result;
             return true;
         }
         return false;
     }
 
     /**
-     * Load on directory "Routes".
-     * @return bool
+     * Recursion search and include any project php file.
+     * @param $path
+     * @param $filename
+     * @return string
      */
-    public static function loadRoutes(){
-        $aClassFilePath = MyAutoload::$dir . DIRECTORY_SEPARATOR . 'Routes'
-            . DIRECTORY_SEPARATOR . 'Routes.php';
-        if (file_exists($aClassFilePath)) {
-            require_once $aClassFilePath;
-            return true;
+    public static function file_search($path, $filename){
+        try {
+            if (($dir = opendir($path)) == FALSE)
+                return '';
+            $link = '';
+            $fp = scandir($path);  // данная функция основывается на стандартной функции PHP-scandir.
+            for ($i = 0; $i <= count($fp) - 1; $i++) {
+                $link = $path . DIRECTORY_SEPARATOR . $fp[$i];
+                if (is_file($link)) {
+                    if ($fp[$i] == $filename) {
+                        closedir($dir);
+                        return $link;
+                    }
+                } else if (!preg_match('/^[\.]{1,2}$/', $fp[$i]) && is_dir($link)) {
+                    if (($link = MyAutoload::file_search($link, $filename)) != '') {
+                        closedir($dir);
+                        return $link;
+                    }
+                }
+            }
+            closedir($dir);
+            return '';
+        }catch (\Exception $exception){
+            return '';
         }
-        return false;
     }
 
     /**
@@ -90,12 +71,7 @@ class MyAutoload
     public static function AutoLoad(){
         spl_autoload_register(function ($file_name){
             $name = preg_replace('~(.*[\\\\]([A-Z]\w+))~im', '$2', $file_name);
-            MyAutoload::loadControllers($name);//'HomeController'
-            MyAutoload::loadModules($name);//'Controller'
-            MyAutoload::loadModules($name);//'Model'
-            MyAutoload::loadModules($name);//'Config'
-            MyAutoload::loadModels($name);//'Tasks'
-            MyAutoload::loadRoutes();//'Tasks'
+            MyAutoload::loadPHP($name);
         });
     }
 

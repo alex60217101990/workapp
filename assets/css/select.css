@@ -176,3 +176,9 @@ a.disabled {
     cursor: default; /*  курсор в виде стрелки */
     color: #888;/* цвет текста серый */
 }
+
+.hov:hover{
+    background: #b9bbbe;
+    cursor: pointer;
+    color: #5a6268;
+}

@@ -1,14 +1,24 @@
 <?php
-session_start();
 
+    ini_get("session.use_cookies");
+    session_start();
 
     require_once('modules/MyAutoload.php');
     require __DIR__ . '/vendor/autoload.php';
     include_once 'Routes/Routes.php';
 
+//    function f(){
+//        echo'123';
+//    }
+//    function g($r){
+//        $r[0]();
+//    }
+//var_dump(g('f'));
+//
+//    var_dump(password_verify('123', '$2y$10$CMBljG2qDULRtw9RHyIvouAYJ4UwJzmunWzjSoF2H6Pd/qAmgG0DS'));
 
-
-
+// Наконец, уничтожаем сессию.
+//session_destroy();
 
 //TODO:Test.Debug.
 //print_r(Tasks::getTasks());

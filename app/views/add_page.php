@@ -50,7 +50,7 @@
     </div>
 </div>
 <!-- large modal -->
-<div class="modal fade" style="z-index: 10000000000000;" id="largeModal" tabindex="-1"
+<div class="modal fade" style="z-index: 1041;" id="largeModal" tabindex="-1"
      role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -62,7 +62,6 @@
                 </button>
             </div>
             <div class="modal-body">
-
 
                 <div class="row">
                     <div class="col-md-7">

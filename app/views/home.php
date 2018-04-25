@@ -18,6 +18,12 @@
     <?php if (isset($this->data['page']) && $this->data['page'] === 'new'): ?>
         <link href="../../assets/css/second_page.css" rel="stylesheet">
     <?php endif; ?>
+    <?php if (isset($this->data['page']) && $this->data['page'] === 'registration' && $this->data["isAuth"]==='false'): ?>
+        <link href="../../assets/css/registration.css" rel="stylesheet">
+    <?php endif; ?>
+    <?php if (isset($this->data['page']) && $this->data['page'] === 'registration' && $this->data["isAuth"]==='true'): ?>
+        <link href="../../assets/css/can-not.css" rel="stylesheet">
+    <?php endif; ?>
 </head>
 <body>
 
@@ -50,32 +56,30 @@
                     <a class="nav-link" href="<?php echo('/new_task') ?>">Add new</a>
                 </li>
 
-
-
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo('/new_task') ?>">Services</a>
-                </li>
-                <li class="nav-item">
+               <!-- <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
-                    <?php
-                    //$_SESSION["Auth"]=["Auth"=>true/false,"UserName"=>"UserName","AccountType"=>"User/Admin"]
-                    if (!isset($_SESSION["Auth"])) {
-                        echo <<<AUTH
-                        <a href="#" id="AuhtorizationBtn" class="nav-link"  data-toggle="modal" data-target="#AuthorizationModal" >
+                    <?php if($this->data["isAuth"]==='false'): ?>
+                        <a href="#" id="AuhtorizationBtn" class="nav-link"
+                           data-toggle="modal" data-target="#AuthorizationModal" >
                           SignIn
                         </a>
-AUTH;
-                    } else {
-                        echo <<<AUTH
-                    <a href="#" class="nav-link"  >
-                        {$_SESSION["Auth"]["UserName"]}
-                    </a>
-AUTH;
-                    }
-                    ?>
+                    <?php else: ?>
+                        <div class="dropdown" style="max-width: 70px">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <?php echo $this->data["User"]?>
+                            </button>
+                            <div class="dropdown-menu" id="Close">
+                                <h6 class="dropdown-header">Logout</h6>
+                                <span class="dropdown-item hov" id="logout">
+                                    Start
+                                </span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </li>
+
             </ul>
         </div>
     </div>
@@ -87,6 +91,12 @@ AUTH;
         <?php echo $this->load('add_page', [$this->data]); ?>
     <?php elseif (isset($this->data['page']) && $this->data['page'] === 'first'): ?>
         <?php echo $this->load('pages', [$this->data]); ?>
+    <?php elseif (isset($this->data['page']) && $this->data['page'] === 'registration'
+        && $this->data["isAuth"]==='false'): ?>
+        <?php echo $this->load('registration', [$this->data]); ?>
+    <?php elseif (isset($this->data['page']) && $this->data['page'] === 'registration'
+        && $this->data["isAuth"]==='true'): ?>
+        <?php echo $this->load('canNot'); ?>
     <?php endif; ?>
 
 </div>
@@ -151,6 +161,9 @@ AUTH;
 <?php if (!isset($_SESSION["Auth"])): ?>
     <script src="../../assets/js/authorization.js"></script>
 <?php endif; ?>
-
+<script src="../../assets/js/out.js"></script>
+<?php if (isset($this->data['page']) && $this->data['page'] === 'registration'): ?>
+    <script src="../../assets/js/canNot.js"></script>
+<?php endif; ?>
 </body>
 </html>
