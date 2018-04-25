@@ -14,7 +14,7 @@
                     <div class="input-group">
                         <div class="select" style="position:relative;top: -40px">
                             <div id="dd" class="wrapper-dropdown-3" tabindex="1">
-                                <span>Sorted</span>
+                                <span><?php echo $this->data[3] ?></span>
                                 <ul class="dropdown">
                                     <li>
                                         <span id="IdLink" data-sort="<?php echo ('/list/'.$this->data[2].'/Id') ?>">
@@ -59,13 +59,16 @@
     <div class="col-md-5">
             <h3 class="h3" contenteditable="false" data-task-id="<?php echo $this->escape($element['Id']); ?>">
                 <?php echo $this->escape($element['Id']); ?></h3>
-            <p contenteditable="true" class="pN" data-task-id="<?php echo $this->escape($element['Id']); ?>">
+            <p contenteditable="<?php echo($this->data["isAuth"]) ?>"
+               class="pN" data-task-id="<?php echo $this->escape($element['Id']); ?>">
                 <?php echo $this->escape($element['Name']); ?>
             </p>
-            <p contenteditable="true" class="pE" data-task-id="<?php echo $this->escape($element['Id']); ?>">
+            <p contenteditable="<?php echo($this->data["isAuth"]) ?>"
+               class="pE" data-task-id="<?php echo $this->escape($element['Id']); ?>">
                 <?php echo $this->escape($element['Mail']); ?>
             </p>
 
+         <?php if($this->data["isAuth"]==='true'): ?>
             <label class="custom-control material-checkbox">
                 <input type="checkbox" class="material-control-input CheckboxVal"
                       <?php echo ($this->escape($element['Status'])==='Ready')?'checked':''; ?>
@@ -73,14 +76,17 @@
                 <span class="material-control-indicator"></span>
                 <span class="material-control-description">Status</span>
             </label>
+         <?php endif; ?>
     </div>
     <div class="col-md-10">
         <div style="overflow-y: hidden">
-            <p style="overflow-y: scroll" contenteditable="true"
+            <p style="overflow-y: scroll"
+               contenteditable="<?php echo($this->data["isAuth"]) ?>"
                data-task-id="<?php echo $this->escape($element['Id']); ?>" class="pD">
                 <?php echo $this->escape($element['Description']); ?>
             </p>
         </div>
+        <?php if($this->data["isAuth"]==='true'): ?>
         <div class="btn-group">
             <button class="save_on_server btn btn-warning Save"
                     style=" border-radius: 5px!important; "
@@ -104,6 +110,7 @@
                 </form>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </div>
             <hr>

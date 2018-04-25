@@ -319,7 +319,6 @@ class ClassLoader
     public function loadClass($class)
     {
         if ($file = $this->findFile($class)) {
-
             includeFile($file);
 
             return true;
@@ -408,21 +407,10 @@ class ClassLoader
         }
 
         if (isset($this->prefixesPsr0[$first])) {
-          //======================
-          //TODO: Load file hare.
-          //======================
             foreach ($this->prefixesPsr0[$first] as $prefix => $dirs) {
                 if (0 === strpos($class, $prefix)) {
-
                     foreach ($dirs as $dir) {
-                        $string = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0;
-                        $string= preg_replace_callback("/(\/.*\/)(([a-zA-Z]{1}))(.*)/im",
-                            function ($matches) {
-                                return $matches[1]. mb_strtolower($matches[2]).$matches[4];
-                            }, $string);
-
-                        if (file_exists($file = $string)) {
-
+                        if (file_exists($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0)) {
                             return $file;
                         }
                     }
@@ -453,7 +441,5 @@ class ClassLoader
  */
 function includeFile($file)
 {
-//    echo '</br>';
-//    var_dump($file);
-    require $file;
+    include $file;
 }

@@ -10,6 +10,7 @@ use Windwalker\Renderer\PhpRenderer;
 use modules\MyAutoload;
 use app\models\Tasks;
 use app\controllers\HomeController;
+use app\controllers\ActionController;
 
 $file = new MyAutoload();
 
@@ -29,14 +30,21 @@ $renderer = new PhpRenderer($path . DIRECTORY_SEPARATOR. 'app'.DIRECTORY_SEPARAT
  * ----------------------------------------------------------------------------------
  */
 
+
 $router->get('/list/{number}/{sort}', function ($req) use ($renderer) {
     $data = Tasks::getTasks($req->number-1,$req->sort);
-    echo $renderer->render('home', [$data, Tasks::getTasksCount(), $req->number, $req->sort, 1, "page"=>'first']);
+
+    echo $renderer->render('home', [$data, Tasks::getTasksCount(), $req->number,
+        $req->sort, 1, "page"=>'first', "isAuth" => ActionController::IsAuthGuard(),
+        "User" => ActionController::GetUser()]);
 });
 
 $router->get('/new_task', function ($req) use ($renderer) {
     $add = 'yes';
-    echo $renderer->render('home', ['new'=>$add, 'page'=>'new_task']);
+    echo $renderer->render('home',
+        ['new'=>$add, 'page'=>'new_task',
+        "isAuth" => ActionController::IsAuthGuard(),
+        "User" => ActionController::GetUser()]);
 });
 
 
@@ -81,20 +89,27 @@ $router->post('/update_task_data', function ($req, $res) {
 
 $router->post('/authorization', function ($req, $res) {
     try {
-//TODO: tmp.authorization hare.
-        $authInfo = json_decode($_POST['authData'], true);
-        $user = Users::getUserByLogAndPass($authInfo['login'], $authInfo['password']);
-        if ($user) {
-            $_SESSION['Auth']=["Auth"=>true,"UserName"=>$user['Name'],"AccauntType"=>$user['AccountType']];
-            $res->send(json_encode(1));
-
-        } else {
-            $res->send(json_encode(2));
-        }
-
+        $res->send(ActionController::Authorization());
     } catch (\Exception $e) {
-        $res->send($e->getMessage());
+        $res->send(['error'=>$e->getMessage(),'code'=>$e->getCode()]);
     }
+});
+
+
+$router->post('/logout', function ($req, $res) {
+    try {
+        $res->send(ActionController::clearSessionCookie());
+    } catch (\Exception $e) {
+        $res->send(['error'=>$e->getMessage(),'code'=>$e->getCode()]);
+    }
+});
+
+/**
+ * On this link you can authorization.
+ */
+$router->get('/registration', function ($req, $res) use($renderer) {
+    echo $renderer->render('home', ["page"=>'registration',
+        "isAuth" => ActionController::IsAuthGuard()]);
 });
 
 
